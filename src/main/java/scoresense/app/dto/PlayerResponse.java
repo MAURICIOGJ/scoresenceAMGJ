@@ -15,18 +15,25 @@ public class PlayerResponse {
 
     @JsonProperty("player_id")
     Long playerId;
+
     @JsonProperty("name")
     String name;
+
     @JsonProperty("position")
     String position;
+
     @JsonProperty("age")
-    int age;
+    Integer age;
+
     @JsonProperty("nationality")
     String nationality;
+
     @JsonProperty("height")
-    int height;
+    Integer height;
+
     @JsonProperty("weight")
-    int weight;
+    Integer weight;
+
     @JsonProperty("team_id")
     Long teamId;
 }

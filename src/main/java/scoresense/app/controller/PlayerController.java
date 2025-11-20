@@ -1,57 +1,101 @@
 package scoresense.app.controller;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
-import scoresense.app.model.Player;
-import scoresense.app.repository.PlayerRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import scoresense.app.dto.PlayerRequest;
+import scoresense.app.dto.PlayerResponse;
+import scoresense.app.service.PlayerService;
 
-import java.util.List;
 @RestController
 @RequestMapping("/api/players")
-
+@Tag(name = "Players", description = "Operations CRUD and search for players")
 public class PlayerController {
 
-    private final PlayerRepository playerRepository;
+    private final PlayerService playerService;
 
-    public PlayerController(PlayerRepository playerRepository) {
-        this.playerRepository = playerRepository;
+    public PlayerController(PlayerService playerService) {
+        this.playerService = playerService;
     }
 
+    // 1. ENDPOINT PRINCIPAL: Obtener todos con paginación
     @GetMapping
-    @Operation(summary = "Get players", description = "Get all players")
-    public List<Player> getAllPlayers() {
-        return playerRepository.findAll();
+    @Operation(summary = "Get all players (paginated)", description = "Return a page of players. Use ?page=X&size=Y&sort=name,asc to paginate.")
+    public ResponseEntity<Page<PlayerResponse>> getAll(Pageable pageable) {
+        return ResponseEntity.ok(playerService.getAllPaged(pageable));
     }
 
+    // Obtener jugador por ID
     @GetMapping("/{id}")
-    @Operation(summary = "Get a player", description = "Get player by ID")
-    public Player getPlayerById(@PathVariable Long id) {
-        return playerRepository.findById(id).orElse(null);
+    @Operation(summary = "Get player by ID")
+    public ResponseEntity<PlayerResponse> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(playerService.getById(id));
     }
 
+    // Crear nuevo jugador
     @PostMapping
-    @Operation(summary = "Create a player", description = "Create a new player")
-    public Player createPlayer(@RequestBody Player player) {
-        return playerRepository.save(player);
+    @Operation(summary = "Create a new player", description = "A player must be associated with an existing team ID.")
+    public ResponseEntity<PlayerResponse> create(@Valid @RequestBody PlayerRequest req) {
+        PlayerResponse created = playerService.create(req);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    // Actualizar jugador existente
     @PutMapping("/{id}")
-    @Operation(summary = "Update a player", description = "Update player by ID")
-    public Player updatePlayer(@PathVariable Long id, @RequestBody Player playerDetails) {
-        return playerRepository.findById(id).map(player -> {
-            player.setName(playerDetails.getName());
-            player.setPosition(playerDetails.getPosition());
-            player.setAge(playerDetails.getAge());
-            player.setNationality(playerDetails.getNationality());
-            player.setHeight(playerDetails.getHeight());
-            player.setWeight(playerDetails.getWeight());
-            player.setTeam(playerDetails.getTeam());
-            return playerRepository.save(player); }).orElse(null);
+    @Operation(summary = "Update player information")
+    public ResponseEntity<PlayerResponse> update(@PathVariable Long id, @Valid @RequestBody PlayerRequest req) {
+        PlayerResponse updated = playerService.update(id, req);
+        return ResponseEntity.ok(updated);
     }
+
+    // Eliminar jugador por ID
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a player", description = "Delete player by ID")
-    public void deletePlayer(@PathVariable Long id) {
-        playerRepository.deleteById(id);
+    @Operation(summary = "Delete a player")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        playerService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // --- CONSULTAS PERSONALIZADAS ---
+    // Buscar por nacionalidad (paginado)
+    @GetMapping("/by-nationality")
+    @Operation(summary = "Search players by nationality", description = "Returns a paginated list of players filtered by their nationality.")
+    public ResponseEntity<Page<PlayerResponse>> getByNationality(
+            @RequestParam String nationality,
+            Pageable pageable) {
+        return ResponseEntity.ok(playerService.findByNationalityPaged(nationality, pageable));
+    }
+
+    // Buscar por ID de equipo (paginado)
+    @GetMapping("/by-team/{teamId}")
+    @Operation(summary = "Search players by Team ID", description = "Returns a paginated list of players belonging to a specific team.")
+    public ResponseEntity<Page<PlayerResponse>> getByTeamId(
+            @PathVariable Long teamId,
+            Pageable pageable) {
+        return ResponseEntity.ok(playerService.findByTeamIdPaged(teamId, pageable));
+    }
+
+    // Búsqueda por nombre y posición (paginado)
+    @GetMapping("/search")
+    @Operation(summary = "Search players by name and position", description = "Returns a paginated list of players matching the name (partial) and position.")
+    public ResponseEntity<Page<PlayerResponse>> searchByNameAndPosition(
+            @RequestParam String name,
+            @RequestParam String position,
+            Pageable pageable) {
+        return ResponseEntity.ok(playerService.searchByNameAndPositionPaged(name, position, pageable));
     }
 }

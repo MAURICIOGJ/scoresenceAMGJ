@@ -1,38 +1,52 @@
+# --- Definición de Tipos ---
 
-type Coach {
-    coachId: ID!
+type Player {
+    playerId: ID!
     name: String!
-    nationality: String
-    experiencedYears: Int
-    team: Team
+    position: String!
+    age: Int!
+    nationality: String!
+    height: Int!
+    weight: Int!
+    teamId: ID # Mantenemos teamId como ID simple
 }
-type Team {
-    teamId: ID!
-    name: String!
-    country: String
-    foundedYear: Int
-}
+
+# --- Queries (Consultas) ---
+
 type Query {
-
-    coaches: [Coach]
-
-
-    coachById(id: ID!): Coach
+    # Obtener todos los jugadores
+    players: [Player]
+    
+    # Obtener un jugador por ID
+    playerById(id: ID!): Player
 }
-type Mutation {
 
-    createCoach(
+# --- Mutations (Mutaciones) ---
+
+type Mutation {
+    # Crear un nuevo jugador
+    createPlayer(
         name: String!
-        nationality: String
-        experiencedYears: Int
-        teamId: ID
-    ): Coach
-    updateCoach(
-        coachId: ID!
+        position: String!
+        age: Int! 
+        nationality: String!
+        height: Int!
+        weight: Int!
+        teamId: ID!
+    ): Player
+
+    # Actualizar un jugador existente
+    updatePlayer(
+        playerId: ID!
         name: String
+        position: String
+        age: Int
         nationality: String
-        experiencedYears: Int
+        height: Int
+        weight: Int
         teamId: ID
-    ): Coach
-    deleteCoach(coachId: ID!): String
+    ): Player
+
+    # Eliminar un jugador
+    deletePlayer(playerId: ID!): String
 }

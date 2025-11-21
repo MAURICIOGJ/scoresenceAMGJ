@@ -1,16 +1,15 @@
 package scoresense.app.controller;
 
+import java.util.List;
+
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
-import io.swagger.v3.oas.annotations.Operation;
 import scoresense.app.dto.PlayerRequest;
 import scoresense.app.dto.PlayerResponse;
 import scoresense.app.service.PlayerService;
-import java.util.List;
-import org.springframework.data.domain.PageRequest;
 
 @Controller
 public class PlayerGraphQLController {
@@ -21,25 +20,22 @@ public class PlayerGraphQLController {
         this.playerService = playerService;
     }
 
-    // --- QUERIES (Consultas) ---
-    // Obtiene una lista de jugadores (simulando getAll() del CoachService)
+    // --- QUERIES (Para obtener datos) ---
+    // Mapea a la query 'players' en el esquema
     @QueryMapping
-    @Operation(summary = "Get all players", description = "Retrieves a list of all players (first page)")
     public List<PlayerResponse> players() {
-        // Se llama al método paginado del servicio, pidiendo la primera página (página 0, tamaño 100)
-        // ya que el CoachService usa List<CoachResponse> getAll(), que es una lista no paginada.
-        return playerService.getAllPaged(PageRequest.of(0, 100)).getContent();
+        // Usa el método getAll() sin paginación que creamos en el servicio
+        return playerService.getAll();
     }
 
-    // Obtiene un jugador por ID
+    // Mapea a la query 'playerById' en el esquema
     @QueryMapping
-    @Operation(summary = "Get player by ID", description = "Retrieves player details by ID")
     public PlayerResponse playerById(@Argument Long id) {
         return playerService.getById(id);
     }
 
-    // --- MUTATIONS (Modificaciones) ---
-    // Crea un nuevo jugador
+    // --- MUTATIONS (Para modificar datos) ---
+    // Mapea a la mutation 'createPlayer'
     @MutationMapping
     public PlayerResponse createPlayer(
             @Argument String name,
@@ -50,7 +46,6 @@ public class PlayerGraphQLController {
             @Argument Short weight,
             @Argument Long teamId
     ) {
-        // Construye el DTO Request a partir de los argumentos de GraphQL
         PlayerRequest req = new PlayerRequest();
         req.setName(name);
         req.setPosition(position);
@@ -62,7 +57,7 @@ public class PlayerGraphQLController {
         return playerService.create(req);
     }
 
-    // Actualiza un jugador existente
+    // Mapea a la mutation 'updatePlayer'
     @MutationMapping
     public PlayerResponse updatePlayer(
             @Argument Long playerId,
@@ -74,7 +69,6 @@ public class PlayerGraphQLController {
             @Argument Short weight,
             @Argument Long teamId
     ) {
-        // Construye el DTO Request a partir de los argumentos de GraphQL
         PlayerRequest req = new PlayerRequest();
         req.setName(name);
         req.setPosition(position);
@@ -86,7 +80,7 @@ public class PlayerGraphQLController {
         return playerService.update(playerId, req);
     }
 
-    // Elimina un jugador
+    // Mapea a la mutation 'deletePlayer'
     @MutationMapping
     public String deletePlayer(@Argument Long playerId) {
         playerService.delete(playerId);

@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 
 public class NewsRequest {
+
     @NotBlank
     @Size(max = 150)
     private String title;

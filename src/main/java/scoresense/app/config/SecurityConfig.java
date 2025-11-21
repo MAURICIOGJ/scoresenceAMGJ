@@ -19,7 +19,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                 auth -> auth
                         .requestMatchers("/signin", "/signup").permitAll()
-                        .requestMatchers("/api/v1/coaches/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/plares/**").hasRole("ADMIN")
                         .requestMatchers("/api/v3/learningResources/**").hasRole("USER")
                         .requestMatchers("/graphql/**").hasRole("ADMIN")
                         .requestMatchers("/services/**").hasRole("ADMIN")

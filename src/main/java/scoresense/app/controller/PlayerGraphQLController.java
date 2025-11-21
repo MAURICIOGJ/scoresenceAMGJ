@@ -20,70 +20,63 @@ public class PlayerGraphQLController {
         this.playerService = playerService;
     }
 
-    // --- QUERIES (Para obtener datos) ---
-    // Mapea a la query 'players' en el esquema
+    // ==========================================
+    //              QUERIES (CONSULTAS)
+    // ==========================================
+    // 1. Obtener todos los jugadores
     @QueryMapping
     public List<PlayerResponse> players() {
-        // Usa el método getAll() sin paginación que creamos en el servicio
         return playerService.getAll();
     }
 
-    // Mapea a la query 'playerById' en el esquema
+    // 2. Obtener un jugador por su ID
     @QueryMapping
     public PlayerResponse playerById(@Argument Long id) {
         return playerService.getById(id);
     }
 
-    // --- MUTATIONS (Para modificar datos) ---
-    // Mapea a la mutation 'createPlayer'
-    @MutationMapping
-    public PlayerResponse createPlayer(
-            @Argument String name,
-            @Argument String position,
-            @Argument Short age,
+    // 3. [ESPECIALIZADA] Buscar por Nacionalidad
+    @QueryMapping
+    public List<PlayerResponse> playersByNationality(@Argument String nationality) {
+        return playerService.findByNationality(nationality);
+    }
+
+    // 4. [ESPECIALIZADA] Buscar por Posición y Equipo
+    @QueryMapping
+    public List<PlayerResponse> playersByPositionAndTeam(@Argument String position, @Argument Long teamId) {
+        return playerService.findByPositionAndTeam(position, teamId);
+    }
+
+    // 5. [ESPECIALIZADA] Buscar por Nacionalidad y Edad Máxima
+    @QueryMapping
+    public List<PlayerResponse> playersByNationalityAndMaxAge(
             @Argument String nationality,
-            @Argument Short height,
-            @Argument Short weight,
-            @Argument Long teamId
+            @Argument Integer maxAge // GraphQL envía Int, Java recibe Integer
     ) {
-        PlayerRequest req = new PlayerRequest();
-        req.setName(name);
-        req.setPosition(position);
-        req.setAge(age);
-        req.setNationality(nationality);
-        req.setHeight(height);
-        req.setWeight(weight);
-        req.setTeamId(teamId);
+        // Convertimos Integer a Short porque tu servicio/BD usa Short
+        return playerService.findByNationalityAndMaxAge(nationality, maxAge.shortValue());
+    }
+
+    // ==========================================
+    //            MUTATIONS (CAMBIOS)
+    // ==========================================
+    // 1. Crear Jugador (Usando Input Type)
+    // GraphQL envía un objeto "request", Spring lo mapea automáticamente a PlayerRequest
+    @MutationMapping
+    public PlayerResponse createPlayer(@Argument("request") PlayerRequest req) {
         return playerService.create(req);
     }
 
-    // Mapea a la mutation 'updatePlayer'
+    // 2. Actualizar Jugador (Usando Input Type)
     @MutationMapping
-    public PlayerResponse updatePlayer(
-            @Argument Long playerId,
-            @Argument String name,
-            @Argument String position,
-            @Argument Short age,
-            @Argument String nationality,
-            @Argument Short height,
-            @Argument Short weight,
-            @Argument Long teamId
-    ) {
-        PlayerRequest req = new PlayerRequest();
-        req.setName(name);
-        req.setPosition(position);
-        req.setAge(age);
-        req.setNationality(nationality);
-        req.setHeight(height);
-        req.setWeight(weight);
-        req.setTeamId(teamId);
-        return playerService.update(playerId, req);
+    public PlayerResponse updatePlayer(@Argument Long id, @Argument("request") PlayerRequest req) {
+        return playerService.update(id, req);
     }
 
-    // Mapea a la mutation 'deletePlayer'
+    // 3. Eliminar Jugador
     @MutationMapping
-    public String deletePlayer(@Argument Long playerId) {
-        playerService.delete(playerId);
+    public String deletePlayer(@Argument Long id) {
+        playerService.delete(id);
         return "Player deleted successfully";
     }
 }

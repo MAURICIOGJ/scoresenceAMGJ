@@ -1,6 +1,15 @@
 package scoresense.app.model;
-import jakarta.persistence.*;
+
 import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +18,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "matches")
 public class Match {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "match_id")
@@ -31,4 +41,7 @@ public class Match {
     @JoinColumn(name = "away_team")
     private Team awayTeam;
 
+    @ManyToOne
+    @JoinColumn(name = "referee_id")
+    private Referee referee;
 }

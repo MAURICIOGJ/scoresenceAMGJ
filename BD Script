@@ -1,4 +1,3 @@
-Registrer bd actualizado 
 --LIGAS Y EQUIPOS
 CREATE TABLE leagues (
     league_id SERIAL PRIMARY KEY,
@@ -99,16 +98,16 @@ CREATE TABLE contracts (
 );
 
 --NOTICIAS, SENTIMIENTOS Y TENDENCIAS
-CREATE TABLE news (
-    news_id SERIAL PRIMARY KEY,
-    title VARCHAR(200) NOT NULL,
-    content TEXT NOT NULL,
-    publish_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    author VARCHAR(50),
-    source_url VARCHAR(255),
-    image_url VARCHAR(255),
-    team_id INT REFERENCES teams(team_id)
-);
+	CREATE TABLE news (
+	    news_id SERIAL PRIMARY KEY,
+	    title VARCHAR(200) NOT NULL,
+	    content TEXT NOT NULL,
+	    publish_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	    author VARCHAR(50),
+	    source_url VARCHAR(255),
+	    image_url VARCHAR(255),
+	    team_id INT REFERENCES teams(team_id)
+	);
 
 CREATE TABLE sentiments (
     sentiment_id SERIAL PRIMARY KEY,
@@ -221,6 +220,8 @@ Select * from teams;
 Select * from coaches;
 Select * from matches;
 Select * from referee;
+Select * from news;
+Select * from favorites;
 
 
 
@@ -530,3 +531,113 @@ VALUES (22, 9, 1, 90);
 -- Luis Malagón (ID 23)
 INSERT INTO player_stats (player_id, match_id, minutes_played) 
 VALUES (23, 9, 90);
+
+
+-- =============================================
+-- NOTICIAS DE LA JORNADA 1 y 2 (Finales de Noviembre 2025)
+-- =============================================
+
+INSERT INTO news (title, content, publish_date, author, source_url, image_url, team_id) VALUES
+('Pumas se lleva el Clásico Capitalino', 'En un partido vibrante, Pumas logró vencer al América 2-1 gracias a los goles de Memo Martínez y JJ Macías. La afición universitaria celebra en el Olímpico.', '2025-11-28 22:30:00', 'Juan Futbol', 'https://scoresense.com/news/pumas-america-resumen', 'na', 1),
+
+('Dudas en Coapa tras la derrota', 'André Jardine no encuentra la fórmula defensiva. La derrota contra Pumas deja muchas interrogantes sobre el planteamiento táctico de las Águilas.', '2025-11-29 09:00:00', 'Carlos Reinoso', 'https://scoresense.com/news/america-crisis', 'na', 2),
+
+('Chivas rescata un empate internacional', 'El Rebaño Sagrado logró un empate 1-1 contra el Inter de Milán en un amistoso de alto nivel. Alexis Vega fue la figura del encuentro.', '2025-11-29 10:15:00', 'ChivaHermano', 'https://scoresense.com/news/chivas-inter', 'na', 3),
+
+('El Clásico Español se tiñe de blanco', 'Real Madrid venció 3-2 al Barcelona en un partido de locura. Marcus Rashford fue el héroe inesperado con un doblete espectacular.', '2025-11-30 08:00:00', 'Marca', 'https://scoresense.com/news/real-madrid-barcelona', 'na', 7),
+
+('Polémica expulsión de Casemiro', 'El mediocampista vio la tarjeta roja en el minuto 65, dejando a su equipo con diez hombres. El arbitraje de Alejandro Hernández está bajo la lupa.', '2025-11-30 12:45:00', 'Mundo Deportivo', 'https://scoresense.com/news/casemiro-red-card', 'na', 7),
+
+-- =============================================
+-- NOTICIAS DE LA JORNADA 3 y 4 (Inicios de Diciembre 2025)
+-- =============================================
+
+('Vinícius brilla en la Premier League', 'El brasileño anotó un gol decisivo para el Manchester United en el empate contra Liverpool. Su adaptación al fútbol inglés está siendo rápida.', '2025-12-01 14:20:00', 'Sky Sports', 'https://scoresense.com/news/vini-premier', 'na', 4),
+
+('Jude Bellingham, el rey de las asistencias', 'Otra asistencia clave del inglés para el United. Se ha convertido en el motor del mediocampo de Ten Hag esta temporada.', '2025-12-01 16:00:00', 'The Sun', 'https://scoresense.com/news/bellingham-stats', 'na', 4),
+
+('Juventus mantiene su arco en cero', 'Thiago Motta ha construido una muralla. Empate sin goles contra el Milan que demuestra la solidez defensiva de la Vecchia Signora.', '2025-12-02 10:00:00', 'Gazzetta', 'https://scoresense.com/news/juve-milan', 'na', 10),
+
+('Arsenal domina pero no concreta', 'A pesar de la victoria 2-0 contra Manchester United, Mikel Arteta pide más contundencia a sus delanteros de cara al arco.', '2025-12-02 18:30:00', 'London Evening', 'https://scoresense.com/news/arsenal-win', 'na', 6),
+
+('El renacer de Alexis Vega', 'Con goles consecutivos, el delantero mexicano parece haber recuperado su mejor versión física y mental bajo el mando de Gago.', '2025-12-03 11:00:00', 'Récord', 'https://scoresense.com/news/alexis-vega-nivel', 'na', 3),
+
+-- =============================================
+-- NOTICIAS DE LA JORNADA 5 a 8 (Mediados de Diciembre 2025)
+-- =============================================
+
+('Barcelona golea al Atlético', 'Hansi Flick respira tranquilo tras vencer 4-1 al equipo del Cholo Simeone. Una exhibición ofensiva que necesitaban los culés.', '2025-12-05 23:00:00', 'Sport', 'https://scoresense.com/news/barca-atleti-goleada', 'na', 8),
+
+('Crisis total en el Atlético de Madrid', 'Simeone en la cuerda floja. La defensa colchonera hace aguas y la afición empieza a perder la paciencia.', '2025-12-06 09:30:00', 'AS', 'https://scoresense.com/news/atleti-crisis', 'na', 9),
+
+('Memo Martínez: El hombre Hat-Trick', 'Noche histórica para el delantero de Pumas. Tres goles contra Chivas para sentenciar una victoria 3-0 contundente.', '2025-12-07 21:00:00', 'Esto', 'https://scoresense.com/news/pumas-chivas-goleada', 'na', 1),
+
+('Desastre defensivo del Guadalajara', 'La expulsión de Orozco condicionó el partido, pero la falta de reacción del equipo preocupa a la directiva rojiblanca.', '2025-12-08 08:00:00', 'MedioTiempo', 'https://scoresense.com/news/chivas-derrota-pumas', 'na', 3),
+
+('Liverpool recupera sensaciones', 'Victoria cómoda 3-0 contra Arsenal. Salah y Darwin Núñez se entendieron a la perfección en Anfield.', '2025-12-08 15:00:00', 'BBC Sport', 'https://scoresense.com/news/liverpool-arsenal', 'na', 5),
+
+-- =============================================
+-- RUMORES Y NOTICIAS GENERALES
+-- =============================================
+
+('¿Fernando Gago a Boca?', 'Rumores desde Argentina sitúan al técnico de Chivas fuera de México tras la goleada recibida contra Pumas.', '2025-12-09 12:00:00', 'Olé', 'https://scoresense.com/news/gago-salida', 'na', 3),
+
+('América recupera el vuelo', 'Las Águilas vencen a Chivas 3-1 en el Clásico Nacional. Julián Quiñones fue imparable con dos goles.', '2025-12-10 10:00:00', 'TUDN', 'https://scoresense.com/news/america-chivas-clasico', 'na', 2),
+
+('Malagón pide renovación', 'El portero del América, figura clave en la victoria contra Chivas, espera mejorar su contrato antes de finalizar el año.', '2025-12-10 14:00:00', 'ESPN', 'https://scoresense.com/news/malagon-contrato', 'na', 2),
+
+('Inter de Milán busca refuerzos', 'El equipo italiano tiene visores en la Liga MX. Se rumora interés por jugadores jóvenes de Pumas y América.', '2025-12-11 09:00:00', 'Tuttosport', 'https://scoresense.com/news/inter-scouting', 'na', 12),
+
+('El futuro de Efraín Juárez', 'Tras los excelentes resultados con Pumas, equipos de la MLS empiezan a preguntar por el joven entrenador mexicano.', '2025-12-11 11:00:00', 'Fox Sports', 'https://scoresense.com/news/efrain-juarez-mls', 'na', 1);
+
+INSERT INTO users (username, email, password_hash, role_id) VALUES
+('pumaDeCorazon', 'goya_universidad@mail.com', 'hash_puma_123', (SELECT role_id FROM roles WHERE name = 'USER')),
+('chivaHermano99', 'rebaño_sagrado@mail.com', 'hash_chivas_456', (SELECT role_id FROM roles WHERE name = 'USER')),
+('madridista_gl', 'halamadrid@mail.com', 'hash_rm_789', (SELECT role_id FROM roles WHERE name = 'USER')),
+('premierFan_uk', 'london_football@mail.com', 'hash_pl_000', (SELECT role_id FROM roles WHERE name = 'USER')),
+('americanista_pro', 'odiamemas@mail.com', 'hash_ame_111', (SELECT role_id FROM roles WHERE name = 'USER'));
+
+-- =============================================
+-- FAVORITOS DEL USUARIO: pumaDeCorazon
+-- =============================================
+INSERT INTO favorites (user_id, entity_type, entity_id) VALUES
+((SELECT user_id FROM users WHERE username = 'pumaDeCorazon'), 'team', 1),
+((SELECT user_id FROM users WHERE username = 'pumaDeCorazon'), 'player', 29),
+((SELECT user_id FROM users WHERE username = 'pumaDeCorazon'), 'player', 30),
+((SELECT user_id FROM users WHERE username = 'pumaDeCorazon'), 'team', 7);
+
+-- =============================================
+-- FAVORITOS DEL USUARIO: chivaHermano99
+-- =============================================
+INSERT INTO favorites (user_id, entity_type, entity_id) VALUES
+((SELECT user_id FROM users WHERE username = 'chivaHermano99'), 'team', 3),
+((SELECT user_id FROM users WHERE username = 'chivaHermano99'), 'player', 16),
+((SELECT user_id FROM users WHERE username = 'chivaHermano99'), 'player', 17),
+((SELECT user_id FROM users WHERE username = 'chivaHermano99'), 'player', 1);
+
+-- =============================================
+-- FAVORITOS DEL USUARIO: madridista_gl
+-- =============================================
+INSERT INTO favorites (user_id, entity_type, entity_id) VALUES
+((SELECT user_id FROM users WHERE username = 'madridista_gl'), 'team', 7),
+((SELECT user_id FROM users WHERE username = 'madridista_gl'), 'player', 8),
+((SELECT user_id FROM users WHERE username = 'madridista_gl'), 'player', 9),
+((SELECT user_id FROM users WHERE username = 'madridista_gl'), 'player', 10);
+
+-- =============================================
+-- FAVORITOS DEL USUARIO: premierFan_uk
+-- =============================================
+INSERT INTO favorites (user_id, entity_type, entity_id) VALUES
+((SELECT user_id FROM users WHERE username = 'premierFan_uk'), 'team', 4),
+((SELECT user_id FROM users WHERE username = 'premierFan_uk'), 'team', 5),
+((SELECT user_id FROM users WHERE username = 'premierFan_uk'), 'team', 6),
+((SELECT user_id FROM users WHERE username = 'premierFan_uk'), 'player', 2);
+
+-- =============================================
+-- FAVORITOS DEL USUARIO: americanista_pro
+-- =============================================
+INSERT INTO favorites (user_id, entity_type, entity_id) VALUES
+((SELECT user_id FROM users WHERE username = 'americanista_pro'), 'team', 2),
+((SELECT user_id FROM users WHERE username = 'americanista_pro'), 'player', 20),
+((SELECT user_id FROM users WHERE username = 'americanista_pro'), 'player', 21),
+((SELECT user_id FROM users WHERE username = 'americanista_pro'), 'player', 22);

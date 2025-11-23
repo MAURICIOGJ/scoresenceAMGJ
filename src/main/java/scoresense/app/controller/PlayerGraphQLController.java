@@ -23,57 +23,56 @@ public class PlayerGraphQLController {
     // ==========================================
     //              QUERIES (CONSULTAS)
     // ==========================================
-    // 1. Obtener todos los jugadores
+    // 1. get all players
     @QueryMapping
     public List<PlayerResponse> players() {
         return playerService.getAll();
     }
 
-    // 2. Obtener un jugador por su ID
+    // 2. GET BY ID
     @QueryMapping
     public PlayerResponse playerById(@Argument Long id) {
         return playerService.getById(id);
     }
 
-    // 3. [ESPECIALIZADA] Buscar por Nacionalidad
+    // 3. [CUSTOMIZED] FIND BY NATIONALITY
     @QueryMapping
     public List<PlayerResponse> playersByNationality(@Argument String nationality) {
         return playerService.findByNationality(nationality);
     }
 
-    // 4. [ESPECIALIZADA] Buscar por Posición y Equipo
+    // 4. [CUSTOMIZED] FIND BY POSITION AND TEAM ID
     @QueryMapping
     public List<PlayerResponse> playersByPositionAndTeam(@Argument String position, @Argument Long teamId) {
         return playerService.findByPositionAndTeam(position, teamId);
     }
 
-    // 5. [ESPECIALIZADA] Buscar por Nacionalidad y Edad Máxima
+    // 5. [CUSTOMIZED] FIND BY NATIONALITY AND MAX AGE
     @QueryMapping
     public List<PlayerResponse> playersByNationalityAndMaxAge(
             @Argument String nationality,
-            @Argument Integer maxAge // GraphQL envía Int, Java recibe Integer
+            @Argument Integer maxAge
     ) {
-        // Convertimos Integer a Short porque tu servicio/BD usa Short
+
         return playerService.findByNationalityAndMaxAge(nationality, maxAge.shortValue());
     }
 
     // ==========================================
-    //            MUTATIONS (CAMBIOS)
+    //            MUTATIONS
     // ==========================================
-    // 1. Crear Jugador (Usando Input Type)
-    // GraphQL envía un objeto "request", Spring lo mapea automáticamente a PlayerRequest
+    // 1. Create player
     @MutationMapping
     public PlayerResponse createPlayer(@Argument("request") PlayerRequest req) {
         return playerService.create(req);
     }
 
-    // 2. Actualizar Jugador (Usando Input Type)
+    // 2. Update player
     @MutationMapping
     public PlayerResponse updatePlayer(@Argument Long id, @Argument("request") PlayerRequest req) {
         return playerService.update(id, req);
     }
 
-    // 3. Eliminar Jugador
+    // 3. Delete player
     @MutationMapping
     public String deletePlayer(@Argument Long id) {
         playerService.delete(id);

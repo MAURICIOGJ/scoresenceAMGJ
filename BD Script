@@ -641,3 +641,53 @@ INSERT INTO favorites (user_id, entity_type, entity_id) VALUES
 ((SELECT user_id FROM users WHERE username = 'americanista_pro'), 'player', 20),
 ((SELECT user_id FROM users WHERE username = 'americanista_pro'), 'player', 21),
 ((SELECT user_id FROM users WHERE username = 'americanista_pro'), 'player', 22);
+
+
+UPDATE player_stats
+SET 
+    goals = COALESCE(goals, 0),
+    assists = COALESCE(assists, 0),
+    yellow_cards = COALESCE(yellow_cards, 0),
+    red_cards = COALESCE(red_cards, 0),
+    minutes_played = COALESCE(minutes_played, 0)
+WHERE 
+    goals IS NULL OR 
+    assists IS NULL OR 
+    yellow_cards IS NULL OR 
+    red_cards IS NULL OR 
+    minutes_played IS NULL;
+
+
+
+--consulta de player mas player stats lenguaje natural
+-------------
+
+SELECT 
+    p.player_id,
+    p.name,         
+    p.position,
+    p.age,
+    p.nationality,
+    p.height,
+    p.weight,
+    t.name AS team_name  
+FROM players p
+JOIN teams t ON p.team_id = t.team_id;
+
+---
+SELECT 
+    ps.player_stat_id,                
+    p.name,            
+    t_home.name || ' vs ' || t_away.name AS match_context, -- Shows "Equipo A vs Equipo B"
+    ps.goals,                         
+    ps.assists,                      
+    ps.minutes_played,            
+    ps.yellow_cards,                 
+    ps.red_cards                      
+FROM player_stats ps
+JOIN players p ON ps.player_id = p.player_id
+JOIN matches m ON ps.match_id = m.match_id
+JOIN teams t_home ON m.home_team = t_home.team_id
+JOIN teams t_away ON m.away_team = t_away.team_id;
+
+

@@ -34,7 +34,7 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    // --- MÉTODOS DE OBTENCIÓN GENERAL (Paginado y No Paginado) ---
+    // --- GENERAL  ---
     @GetMapping
     @Operation(summary = "List all players", description = "Return a list of all players without pagination.")
     public ResponseEntity<List<PlayerResponse>> getAll() {
@@ -47,7 +47,7 @@ public class PlayerController {
         return ResponseEntity.ok(playerService.getAllPaged(pageable));
     }
 
-    // --- CRUD BÁSICO ---
+    // --- CRUD ---
     @GetMapping("/{id}")
     @Operation(summary = "Get player by ID")
     public ResponseEntity<PlayerResponse> getById(@PathVariable Long id) {
@@ -75,15 +75,15 @@ public class PlayerController {
         return ResponseEntity.noContent().build();
     }
 
-    // --- CONSULTAS ESPECIALIZADAS (Sin Paginación, retornan List<>) ---
-    // Buscar por nacionalidad
+    // ---  Customized ---
+    // FIND BY NATIONALITY
     @GetMapping("/by-nationality")
     @Operation(summary = "Search players by nationality", description = "Returns a list of players filtered by their nationality.")
     public ResponseEntity<List<PlayerResponse>> getByNationality(@RequestParam String nationality) {
         return ResponseEntity.ok(playerService.findByNationality(nationality));
     }
 
-    // Buscar por posición y equipo (Reemplaza búsqueda por nombre/posición)
+    // FIND BY POSITION AND TEAM ID
     @GetMapping("/by-position-team")
     @Operation(summary = "Search players by position and team", description = "Returns a list of players filtered by position and team ID.")
     public ResponseEntity<List<PlayerResponse>> getByPositionAndTeam(
@@ -92,7 +92,7 @@ public class PlayerController {
         return ResponseEntity.ok(playerService.findByPositionAndTeam(position, teamId));
     }
 
-    // Buscar por nacionalidad y edad máxima
+    // FIND BY NATIONALITY AND MAX AGE
     @GetMapping("/by-nationality-age")
     @Operation(summary = "Search players by nationality and max age", description = "Returns a list of players filtered by nationality and with age less than or equal to maxAge.")
     public ResponseEntity<List<PlayerResponse>> getByNationalityAndMaxAge(

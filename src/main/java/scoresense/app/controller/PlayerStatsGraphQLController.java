@@ -21,32 +21,32 @@ public class PlayerStatsGraphQLController {
     }
 
     // --- QUERIES ---
-    // 1. Obtener todas las estadísticas
+    // 1. get all player stats
     @QueryMapping
     public List<PlayerStatsResponse> allPlayerStats() {
         return playerStatsService.getAll();
     }
 
-    // 2. Obtener estadísticas por ID
+    // 2. get player stats by ID
     @QueryMapping
     public PlayerStatsResponse playerStatsById(@Argument Long id) {
         return playerStatsService.getById(id);
     }
 
-    // 3. [ESPECIALIZADA] Jugadores con Tarjeta Roja
+    // 3. [CUSTOMIZED] players with red cards
     @QueryMapping
     public List<PlayerStatsResponse> playerStatsWithRedCards() {
         return playerStatsService.findPlayersWithRedCard();
     }
 
-    // 4. [ESPECIALIZADA] Jugadores con mínimo de goles
+    // 4. [CUSTOMIZED] players with minimum goals
     @QueryMapping
     public List<PlayerStatsResponse> playerStatsWithMinGoals(@Argument Integer minGoals) {
         return playerStatsService.findPlayersWithMinGoals(minGoals);
     }
 
     // --- MUTATIONS ---
-    // 1. Crear Estadísticas (Usando Input Type)
+    // 1. Create stats
     @MutationMapping
     public PlayerStatsResponse createPlayerStats(@Argument("request") PlayerStatsRequest req) {
         return playerStatsService.create(req);

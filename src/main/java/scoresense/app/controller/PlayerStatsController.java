@@ -32,9 +32,9 @@ public class PlayerStatsController {
         this.playerStatsService = playerStatsService;
     }
 
-    // --- OBTENCIÓN GENERAL ---
+    // ---  GENERAL ---
     @GetMapping
-    @Operation(summary = "List all stats", description = "Returns a list of all player statistics without pagination (Patrón Coach).")
+    @Operation(summary = "List all stats", description = "Returns a list of all player statistics without pagination.")
     public ResponseEntity<List<PlayerStatsResponse>> getAll() {
         return ResponseEntity.ok(playerStatsService.getAll());
     }
@@ -45,7 +45,7 @@ public class PlayerStatsController {
         return ResponseEntity.ok(playerStatsService.getAllPaged(pageable));
     }
 
-    // --- CRUD BÁSICO (SOLO CONSULTA POR ID Y CREACIÓN) ---
+    // --- Create Read ---
     @GetMapping("/{id}")
     @Operation(summary = "Get player stats by ID", description = "Returns statistics for a specific player in a match.")
     public ResponseEntity<PlayerStatsResponse> getById(@PathVariable Long id) {
@@ -59,7 +59,7 @@ public class PlayerStatsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // --- CONSULTAS ESPECIALIZADAS (SIN PAGINACIÓN) ---
+    // --- Customized ---
     @GetMapping("/red-cards")
     @Operation(summary = "Search players with red cards", description = "Returns a list of statistics entries where the player received at least one red card.")
     public ResponseEntity<List<PlayerStatsResponse>> getPlayersWithRedCard() {

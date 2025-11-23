@@ -1,4 +1,4 @@
-# Definición del Tipo Player
+# Define Player
 type Player {
     playerId: ID!
     name: String!
@@ -10,7 +10,7 @@ type Player {
     teamId: ID
 }
 
-# Input Type para crear/actualizar
+# Create Update
 input PlayerInput {
     name: String!
     position: String!
@@ -21,7 +21,7 @@ input PlayerInput {
     teamId: ID!
 }
 
-# Extensiones de Query
+# Extensions  Query
 extend type Query {
     players: [Player]
     playerById(id: ID!): Player
@@ -30,14 +30,14 @@ extend type Query {
     playersByNationalityAndMaxAge(nationality: String!, maxAge: Int!): [Player]
 }
 
-# Extensiones de Mutation
+# Extensions Mutation
 extend type Mutation {
     createPlayer(request: PlayerInput!): PlayerResponse
     updatePlayer(id: ID!, request: PlayerInput!): PlayerResponse
     deletePlayer(id: ID!): String
 }
 
-# Tipo de respuesta para mutaciones (puede ser el mismo que Player o uno específico si devuelve más datos)
+# Tipe de Answer mutaciones
 type PlayerResponse {
     playerId: ID!
     name: String

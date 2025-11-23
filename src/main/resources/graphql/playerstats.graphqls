@@ -1,4 +1,4 @@
-# Definición del Tipo de Respuesta
+# Answer
 type PlayerStats {
     playerStatId: ID!
     goals: Int
@@ -10,7 +10,7 @@ type PlayerStats {
     matchId: ID!
 }
 
-# Input Type para crear estadísticas (limpio y organizado)
+# Create Stadistic
 input PlayerStatsInput {
     goals: Int
     assists: Int
@@ -23,18 +23,18 @@ input PlayerStatsInput {
 
 # Extensiones de Query
 extend type Query {
-    # Obtener todas las estadísticas
+    # Get All playerstats 
     allPlayerStats: [PlayerStats]
     
-    # Obtener por ID
+    # Get by ID
     playerStatsById(id: ID!): PlayerStats
     
-    # Consultas Especializadas
+    # Customized
     playerStatsWithRedCards: [PlayerStats]
     playerStatsWithMinGoals(minGoals: Int!): [PlayerStats]
 }
 
-# Extensiones de Mutation
+# Extensions  Mutation
 extend type Mutation {
     createPlayerStats(request: PlayerStatsInput!): PlayerStats
 }

@@ -691,3 +691,40 @@ JOIN teams t_home ON m.home_team = t_home.team_id
 JOIN teams t_away ON m.away_team = t_away.team_id;
 
 
+
+--Insert user from postman in json 1x1
+{
+    "username": "Mauricio",
+    "email": "mau@gmail.com",
+    "password": "123456",
+    "roleId": 1 }
+
+{
+
+    "username": "Pruebas",
+
+    "email": "pruebas@mail.com",
+
+    "password": "123456",
+
+    "roleId": 1
+
+} 
+
+{
+
+    "username": "Prueba2",
+
+    "email": "prueba2@mail.com",
+
+    "password": "password123",
+
+    "roleId": 1
+
+} 
+{
+    "username": "PumaMayor",
+    "email": "goyauniversidad@mail.com",
+    "password": "goya123",
+    "roleId": 2
+  }

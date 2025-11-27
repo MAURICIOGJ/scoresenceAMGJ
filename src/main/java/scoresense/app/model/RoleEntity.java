@@ -28,12 +28,8 @@ public class RoleEntity implements GrantedAuthority {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    // --- Spring Security ---
     @Override
     public String getAuthority() {
-        if (this.name == null) {
-            return null;
-        }
-        return this.name.startsWith("ROLE_") ? this.name : "ROLE_" + this.name;
+        return name.startsWith("ROLE_") ? name : "ROLE_" + name;
     }
 }

@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/teams/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/teams/**").hasRole("ADMIN")
+                .requestMatchers("/api/players/**", "/api/player-stats/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
